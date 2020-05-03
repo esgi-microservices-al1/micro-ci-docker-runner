@@ -11,8 +11,10 @@ for logLine in logs:
 
 cmdLogs = container.exec_run("touch test", stdout=True, stderr=True, stdin=False, tty=True, detach=False)
 cmdLogs1 = container.exec_run("ls", stdout=True, stderr=True, stdin=False, tty=True, detach=False, demux=True)
+
 print(cmdLogs)
 print(cmdLogs1)
+
 container.stop()
 container.remove()
 
