@@ -1,4 +1,4 @@
-from service.Runner import Runner
+from main.src.service.Runner import Runner
 
 
 if __name__ == "__main__" :
