@@ -14,12 +14,12 @@ jobs:
     # Add your build steps here
 
   # Uncomment and replace {userName} by your account folder name
-   deploy:
-     name: Build/Publish Docker Images to DockerHub & Deploy to Azure VM
-     runs-on: ubuntu-latest
-     if: github.ref == 'refs/heads/master'
+  deploy:
+    name: Build/Publish Docker Images to DockerHub & Deploy to Azure VM
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
 
-     steps:
+    steps:
      - name: Checkout Project
        uses: actions/checkout@v1
 
