@@ -11,9 +11,6 @@ jobs:
     - name: Checkout Project
       uses: actions/checkout@v1
 
-    # Add your build steps here
-
-  # Uncomment and replace {userName} by your account folder name
   deploy:
     name: Build/Publish Docker Images to DockerHub & Deploy to Azure VM
     runs-on: ubuntu-latest
@@ -28,7 +25,7 @@ jobs:
        with:
          username: ${{ secrets.DOCKER_USERNAME }}
          password: ${{ secrets.DOCKER_PASSWORD }}
-         repository: micro-ci-al1/micro-ci-docker-runner
+         repository: esgimicroci/al2-docker-runner
          tag_with_ref: true
 
      - name: Azure Login
@@ -40,4 +37,4 @@ jobs:
        uses: azure/CLI@v1
        with:
          inlineScript: |
-           az vm run-command invoke -g ${{ secrets.AZURE_RESOURCE_GRP }} -n ${{ secrets.AZURE_VM }} --command-id RunShellScript --scripts "cd /home/docker-runner && wget -q https://raw.githubusercontent.com/esgi-microservices-al1/micro-ci-docker-runner/master/.github/azure/docker-compose.yml -O docker-compose.yml && docker-compose stop && docker-compose rm && docker-compose up -d"
+           az vm run-command invoke -g ${{ secrets.AZURE_RESOURCE_GRP }} -n ${{ secrets.AZURE_VM }} --command-id RunShellScript --scripts "cd /home/micro-ci-al1/micro-ci-docker-runner && wget -q https://raw.githubusercontent.com/esgi-microservices-al1/micro-ci-docker-runner/master/.github/azure/docker-compose.yml -O docker-compose.yml && docker-compose stop && docker-compose rm && docker-compose up -d"
