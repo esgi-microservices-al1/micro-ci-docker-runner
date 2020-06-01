@@ -13,13 +13,12 @@ def receive(connection: Connection, limit):
     while True:
         if limit and i >= limit:
             break
-        result = connection.channel.basic.get(queue=connection.queue,
-                                              no_ack=False)
-        if not result:
+        result = connection.channel.basic_get(queue=connection.queue, auto_ack=False)
+        if not result[0]:
             print('Channel Empty.')
             break
-        print(' [x] Received', result['body'])
-        connection.channel.basic_ack(result['method']['delivery_tag'])
+        print(' [x] Received', result[2])
+        connection.channel.basic_ack(result[0].delivery_tag)
         i += 1
     connection.channel.close()
     connection.close()
