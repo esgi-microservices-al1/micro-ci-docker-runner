@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  python:
+    image: python:3.7.7-alpine
+    volumes:
+       - runner-data:/var/lib/runner/data
+
+volumes:
+  runner-data:
