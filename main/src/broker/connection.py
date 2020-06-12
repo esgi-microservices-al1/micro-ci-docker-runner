@@ -1,8 +1,9 @@
 import pika
+import os
 
 
 class Connection:
-    def __init__(self, host, queue, port):
+    def __init__(self, host=os.getenv('BROKER_HOST'), queue=os.getenv('BROKER_QUEUE'), port=int(os.getenv('BROKER_PORT'))):
         self.queue = queue
         credentials = pika.PlainCredentials("user", "pwd")
         params = pika.ConnectionParameters(host=host, port=port, credentials=credentials)
