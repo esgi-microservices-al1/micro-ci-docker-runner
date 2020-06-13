@@ -1,18 +1,17 @@
-from dataclasses import dataclass, field
-
+import os
 from main.src.broker.connection import Connection
 from main.src.service.Runner import Runner
 import json
 
 
-@dataclass
 class Message:
-    connection = Connection()
+    connection_in = Connection(os.getenv('BROKER_HOST'), os.getenv('BROKER_QUEUE_IN'), int(os.getenv('BROKER_PORT')))
+    connection_out = Connection(os.getenv('BROKER_HOST'), os.getenv('BROKER_QUEUE_OUT'), int(os.getenv('BROKER_PORT')))
 
     def send(self, message):
-        self.connection.channel.basic_publish(exchange='',
-                                              routing_key=self.connection.queue,
-                                              body=message)
+        self.connection_out.channel.basic_publish(exchange='',
+                                                  routing_key=self.connection_in.queue,
+                                                  body=message)
         print(' [x] Sent', message)
 
     def receive(self, limit):
@@ -20,22 +19,22 @@ class Message:
         while True:
             if limit and i >= limit:
                 break
-            result = self.connection.channel.basic_get(queue=self.connection.queue, auto_ack=False)
+            result = self.connection_in.channel.basic_get(queue=self.connection_in.queue, auto_ack=False)
             if not result[0]:
                 print('Channel Empty.')
                 break
             print(' [x] Received', result[2])
-            self.connection.channel.basic_ack(result[0].delivery_tag)
+            self.connection_in.channel.basic_ack(result[0].delivery_tag)
             i += 1
-        self.connection.channel.close()
-        self.connection.close()
+        self.connection_in.channel.close()
+        self.connection_in.close()
 
     def liveReceive(self):
-        self.connection.channel.basic_consume(queue=self.connection.queue,
-                                              on_message_callback=self.callbackMessage,
-                                              auto_ack=True)
+        self.connection_in.channel.basic_consume(queue=self.connection_in.queue,
+                                                 on_message_callback=self.callbackMessage,
+                                                 auto_ack=True)
         print(' [*] Waiting for messages. To exit press CTRL+C')
-        self.connection.channel.start_consuming()
+        self.connection_in.channel.start_consuming()
 
     def callbackMessage(self, ch, method, properties, body):
         print(' [x] Received ', body)
@@ -56,7 +55,6 @@ class Message:
                 },
                 'status': i
             }
-            # self.send(msg_out)
-            print(msg_out)
+            self.send(msg_out)
             i += 1
         runner.stop()
