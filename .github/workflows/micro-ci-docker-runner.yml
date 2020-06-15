@@ -25,11 +25,11 @@ jobs:
        with:
          username: ${{ secrets.DOCKER_USERNAME }}
          password: ${{ secrets.DOCKER_PASSWORD }}
-         repository: esgimicroci/al1-docker-runner
+         repository: esgimicroci/al2-docker-runner
          tag_with_ref: true
 
      - name: Azure Login
-       uses: azure/login@v1.1
+       uses: azure/login@v1
        with:
          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -37,4 +37,4 @@ jobs:
        uses: azure/CLI@v1
        with:
          inlineScript: |
-           az vm run-command invoke -g ${{ secrets.AZURE_RESOURCE_GRP }} -n ${{ secrets.AZURE_VM }} --command-id RunShellScript --scripts "cd /home/micro-ci-al1/micro-ci-docker-runner && wget -q https://raw.githubusercontent.com/esgi-microservices-al1/micro-ci-docker-runner/master/.github/azure/docker-compose.yml -O docker-compose.yml && docker-compose stop && docker-compose rm && docker-compose up -d"
+           az vm run-command invoke -g ${{ secrets.AZURE_RESOURCE_GRP }} -n ${{ secrets.AZURE_VM }} --command-id RunShellScript --scripts "cd /home/micro-ci-al1/micro-ci-docker-runner && wget -q https://raw.githubusercontent.com/esgi-microservices-al1/micro-ci-docker-runner/master/.github/azure/docker-compose.yml -O docker-compose.yml && docker-compose stop && docker-compose pull && docker-compose rm && docker-compose up --build -d"
