@@ -5,6 +5,7 @@ services:
     image: esgimicroci/al1-docker-runner:latest
     volumes:
       - runner-data:/var/lib/project/data
+      - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - .env
 

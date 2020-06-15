@@ -1,6 +1,6 @@
 import os
-from main.src.broker.connection import Connection
-from main.src.service.Runner import Runner
+from src.broker.connection import Connection
+from src.service.Runner import Runner
 import json
 
 
