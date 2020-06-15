@@ -2,10 +2,11 @@ version: "3.8"
 
 services:
   python:
-    image: python:3.7.7-alpine
+    image: esgimicroci/al1-docker-runner:latest
     volumes:
-       - runner-data:/var/lib/project/data
+      - runner-data:/var/lib/project/data
+    env_file:
+      - .env
 
 volumes:
   runner-data:
-# Add your networks/volumes/services for your microservice
