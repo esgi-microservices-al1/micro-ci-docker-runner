@@ -1,3 +1,11 @@
-version: '3'
+version: "3.8"
 
+services:
+  python:
+    image: python:3.7.7-alpine
+    volumes:
+       - runner-data:/var/lib/project/data
+
+volumes:
+  runner-data:
 # Add your networks/volumes/services for your microservice
