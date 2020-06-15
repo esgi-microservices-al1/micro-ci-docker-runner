@@ -7,6 +7,8 @@ import json
 class Message:
     connection_in = Connection(os.getenv('BROKER_HOST'), os.getenv('BROKER_QUEUE_IN'), int(os.getenv('BROKER_PORT')))
     connection_out = Connection(os.getenv('BROKER_HOST'), os.getenv('BROKER_QUEUE_OUT'), int(os.getenv('BROKER_PORT')))
+    # connection_in = Connection(os.getenv('BROKER_HOST'), os.getenv('BROKER_QUEUE_IN'), int(os.getenv('BROKER_PORT')))
+    # connection_out = Connection(os.getenv('BROKER_HOST'), os.getenv('BROKER_QUEUE_OUT'), int(os.getenv('BROKER_PORT')))
 
     def send(self, message):
         self.connection_out.channel.basic_publish(exchange='',
