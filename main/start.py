@@ -4,7 +4,7 @@ from src.broker.message import *
 from src.consul.consul import ConsulService
 
 if __name__ == "__main__":
-    consul = ConsulService(port=os.getenv('CONSUL_PORT'),
+    consul = ConsulService(port=int(os.getenv('CONSUL_PORT')),
                            host=os.getenv('CONSUL_HOST'),
                            service_id=os.getenv('CONSUL_SERVICE_ID'),
                            token=os.getenv('CONSUL_TOKEN'),
