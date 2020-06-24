@@ -42,12 +42,12 @@ class ConsulService:
     def _check(self) -> None:
         self.consul.agent.check.ttl_pass(f'service:{self.service_id}')
 
-    def _tempo(self, scheduler) -> None:
+    def _init(self, scheduler) -> None:
         self._check()
-        s.enter(TIMEOUT, 1, self._tempo, (scheduler,))
+        s.enter(TIMEOUT, 1, self._init, (scheduler,))
 
     def check_process(self) -> None:
-        s.enter(TIMEOUT, 1, self._tempo, (s,))
+        s.enter(TIMEOUT, 1, self._init, (s,))
         t = Thread(target=s.run)
         t.start()
 
