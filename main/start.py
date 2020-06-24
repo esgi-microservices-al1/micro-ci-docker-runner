@@ -16,4 +16,4 @@ if __name__ == "__main__":
 
     msg = Message()
     msg.liveReceive()
-    msg.connection.close()
+    # msg.connection.close()
