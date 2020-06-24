@@ -6,6 +6,7 @@ COPY . .
 RUN pip install pipenv
 RUN pip install pika
 RUN pip install docker
+RUN pip install python-consul
 RUN pipenv install --skip-lock --dev --system
 
 CMD python -u /opt/project/main/start.py
