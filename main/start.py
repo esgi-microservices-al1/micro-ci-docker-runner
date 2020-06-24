@@ -12,10 +12,10 @@ if __name__ == "__main__":
                            service_name=os.getenv('CONSUL_SERVICE_NAME'))
 
     consul.register()
-    # consul.check_process()
-    consul.deregister_check('8')
-    consul.deregister_check('Docker UP')
-    consul.deregister_check('service:bastien')
+    consul.check_process()
+    # consul.deregister_check('8')
+    # consul.deregister_check('Docker UP')
+    # consul.deregister_check('service:bastien')
 
     msg = Message()
     msg.liveReceive()
