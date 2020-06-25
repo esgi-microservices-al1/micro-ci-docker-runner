@@ -14,8 +14,7 @@ if __name__ == "__main__":
     consul.register()
     consul.check_process()
     # consul.deregister_check('8')
-    # consul.deregister_check('Docker UP')
-    # consul.deregister_check('service:bastien')
+    # consul.deregister_service('123456')
 
     msg = Message()
     msg.liveReceive()

@@ -40,7 +40,8 @@ class ConsulService:
         self.consul.agent.service.deregister(check_id)
 
     def _check(self) -> None:
-        self.consul.agent.check.ttl_pass(f'service:{self.service_id}')
+        if self.consul.agent.check.ttl_pass(f'service:{self.service_id}'):
+            print('Check !')
 
     def _init(self, scheduler) -> None:
         self._check()
