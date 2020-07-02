@@ -7,7 +7,6 @@ class Connection:
         self.queue = queue
         credentials = pika.PlainCredentials(os.getenv('BROKER_LOGIN'), os.getenv('BROKER_PASSWORD'))
         params = pika.ConnectionParameters(host, port, '/', credentials=credentials)
-        # params = pika.ConnectionParameters(host=host, port=port)
         self.connection = pika.BlockingConnection(params)
         self.channel = self.connection.channel()
         self.channel.queue_declare(queue=queue)

@@ -4,10 +4,11 @@ services:
   python:
     image: esgimicroci/al1-docker-runner:latest
     volumes:
-      - runner-data:/var/lib/project/data
+      - runner-data:/projects
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - .env
+    restart: always
 
 volumes:
   runner-data:
