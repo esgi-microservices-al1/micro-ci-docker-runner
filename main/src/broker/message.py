@@ -40,8 +40,8 @@ class Message:
         print(' [x] Received ', body)
         commands = json.loads(body)
         process = commands['process_id']
-        project = commands['project_path']
-        runner = Runner(project)
+        # project = commands['project_path']
+        runner = Runner(process)
         i = 0
         for item in commands['commands']:
             rowOut = runner.run(item['command'])
