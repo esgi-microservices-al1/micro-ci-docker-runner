@@ -1,11 +1,13 @@
 import docker
+from docker.types import Mount
 
 
 class Runner:
     def __init__(self, path):
         client = docker.from_env()
         image, logs = client.images.build(path=path, dockerfile='Dockerfile')
-        self.container = client.containers.run(image=image.id, tty=True, detach=True)
+        mounts = [Mount(target="/var/run/docker.sock", source="/var/run/docker.sock", type='bind')]
+        self.container = client.containers.run(image=image.id, tty=True, detach=True, mounts=mounts)
 
         for logLine in logs:
             print(logLine)
