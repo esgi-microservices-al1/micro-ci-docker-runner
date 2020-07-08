@@ -44,7 +44,7 @@ class ConsulService:
         self.consul.agent.check.register(f'service:{name}',
                                          Check.http(url=url,
                                                     timeout=timeout,
-                                                    interval='40'),
+                                                    interval='40s'),
                                          service_id=service_id,
                                          notes=note)
 
