@@ -1,14 +1,14 @@
 import os
 
-from src.broker.message import *
+# from src.broker.message import *
 from src.consul.consul import ConsulService
-from src.service.Runner import *
-from src.service.ApiService import *
+# from src.service.Runner import *
+# from src.service.ApiService import *
 from src.service.StatusService import *
 
 if __name__ == "__main__":
-    api_thread = ApiService()
-    api_thread.start()
+    # api_thread = ApiService()
+    # api_thread.start()
 
     consul = ConsulService(port=int(os.getenv('CONSUL_PORT')),
                            host=os.getenv('CONSUL_HOST'),
@@ -19,15 +19,17 @@ if __name__ == "__main__":
                                  'traefik.frontend.rule=PathPrefixStrip:/al1.runner-ci/'],
                            service_name=os.getenv('CONSUL_SERVICE_NAME'))
 
-    consul.register()
-    consul.add_http_check(name='API',
-                          url=f'http://{os.getenv("API_HOST")}:{os.getenv("API_PORT")}/check',
-                          service_id=os.getenv('CONSUL_SERVICE_ID'),
-                          note='Is API alive ?')
+    # consul.register()
+    # consul.add_http_check(name='API',
+    #                       url=f'http://{os.getenv("API_HOST")}:{os.getenv("API_PORT")}/check',
+    #                       service_id=os.getenv('CONSUL_SERVICE_ID'),
+    #                       note='Is API alive ?')
+    consul.consul.agent.check.deregister('service:API')
+
     consul.check_process()
     # consul.deregister_check('8')
     # consul.deregister_service('123456')
 
-    msg = Message()
-    msg.liveReceive()
+    # msg = Message()
+    # msg.liveReceive()
     # msg.connection.close()

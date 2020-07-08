@@ -29,7 +29,7 @@ def getStats():
 
 @app.route('/check')
 def getCheck():
-    return 'Hello, from Team-Runner!'
+    return 'OK', 200
 
 
 class ApiService(threading.Thread):
