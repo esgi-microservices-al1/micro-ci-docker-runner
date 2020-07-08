@@ -53,7 +53,7 @@ class Message:
         if not checkIntegrity(commands):
             print(' error: Invalid message')
             return
-        process = commands['process_id']
+        process = commands['project_id']
         # project = commands['project_path']
         runner = Runner(process)
         i = 0
