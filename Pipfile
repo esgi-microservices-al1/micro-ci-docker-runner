@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 docker= "*"
+pika= "*"
+python-consul2= "*"
 
 [dev-packages]
 vulture = "==1.4"
