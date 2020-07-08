@@ -36,4 +36,4 @@ class ApiService(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        app.run(port=8156)
+        app.run(host="0.0.0.0", port=8156)
