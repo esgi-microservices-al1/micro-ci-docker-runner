@@ -28,28 +28,22 @@ class ConsulService:
     def __post_init__(self) -> None:
         self.consul = consul.Consul(port=self.port, host=self.host, token=self.token)
 
-    def register(self) -> None:
+    def register(self, url, timeout: int = TIMEOUT) -> None:
         self.consul.agent.service.register(self.service_name,
                                            tags=self.tags,
                                            service_id=self.service_id,
                                            address=self.address,
                                            port=8156,
                                            timeout=self.timeout,
-                                           check=Check.ttl(self.ttl_timeout))
+                                           check=Check.http(url=url,
+                                                            timeout=timeout,
+                                                            interval='40s'))
 
     def deregister_check(self, check_id: str) -> None:
         self.consul.agent.check.deregister(check_id)
 
     def deregister_service(self, check_id: str) -> None:
         self.consul.agent.service.deregister(check_id)
-
-    def add_http_check(self, name: str, url, service_id: int, timeout: int = TIMEOUT, note: str = "") -> None:
-        self.consul.agent.check.register(f'service:{name}',
-                                         Check.http(url=url,
-                                                    timeout=timeout,
-                                                    interval='40s'),
-                                         service_id=service_id,
-                                         notes=note)
 
     def _check(self) -> None:
         if self.consul.agent.check.ttl_pass(f'service:{self.service_id}'):
