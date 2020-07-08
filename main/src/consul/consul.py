@@ -19,6 +19,7 @@ class ConsulService:
     service_id: str
     token: str
     tags: List[Text]
+    address: str
     timeout: int = field(default=100)
     ttl_timeout: str = field(default='40s')
     consul: Consul = field(init=False)
@@ -31,6 +32,8 @@ class ConsulService:
         self.consul.agent.service.register(self.service_name,
                                            tags=self.tags,
                                            service_id=self.service_id,
+                                           address=self.address,
+                                           port=8156,
                                            timeout=self.timeout,
                                            check=Check.ttl(self.ttl_timeout))
 
