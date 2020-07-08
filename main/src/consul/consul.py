@@ -21,12 +21,12 @@ class ConsulService:
     tags: List[Text]
     address: str
     timeout: int = field(default=100)
-    ttl_timeout: str = field(default='40s')
+    http_interval: str = field(default='40s')
     consul: Consul = field(init=False)
     service_name: str = field(default='al1.docker.runner')
 
     def __post_init__(self) -> None:
-        self.consul = consul.Consul(port=self.port, host=self.host, token=self.token)
+        self.consul = consul.Consul(port=self.port, host=self.host, token=self.token, scheme='http', verify=False)
 
     def register(self, url, timeout: int = TIMEOUT) -> None:
         self.consul.agent.service.register(self.service_name,
@@ -34,26 +34,12 @@ class ConsulService:
                                            service_id=self.service_id,
                                            address=self.address,
                                            port=8156,
-                                           timeout=self.timeout,
+                                           # timeout=self.timeout,
                                            check=Check.http(url=url,
-                                                            timeout=timeout,
-                                                            interval='40s'))
+                                                            interval=self.http_interval))
 
     def deregister_check(self, check_id: str) -> None:
         self.consul.agent.check.deregister(check_id)
 
     def deregister_service(self, check_id: str) -> None:
         self.consul.agent.service.deregister(check_id)
-
-    def _check(self) -> None:
-        if self.consul.agent.check.ttl_pass(f'service:{self.service_id}'):
-            print('Check !')
-
-    def _init(self, scheduler) -> None:
-        self._check()
-        s.enter(TIMEOUT, 1, self._init, (scheduler,))
-
-    def check_process(self) -> None:
-        s.enter(TIMEOUT, 1, self._init, (s,))
-        t = Thread(target=s.run)
-        t.start()

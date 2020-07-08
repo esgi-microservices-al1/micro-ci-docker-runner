@@ -21,7 +21,6 @@ if __name__ == "__main__":
                            service_name=os.getenv('CONSUL_SERVICE_NAME'))
 
     consul.register(url=f'http://{os.getenv("API_HOST")}:{os.getenv("API_PORT")}/check')
-    consul.check_process()
 
     msg = Message()
     msg.liveReceive()
