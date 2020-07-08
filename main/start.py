@@ -21,8 +21,8 @@ if __name__ == "__main__":
 
     consul.register()
     consul.add_http_check(name='API',
-                          url=f'http://localhost:{os.getenv("API_PORT")}/check',
-                          service_id='123456',
+                          url=f'http://{os.getenv("API_HOST")}:{os.getenv("API_PORT")}/check',
+                          service_id=os.getenv('CONSUL_SERVICE_ID'),
                           note='Is API alive ?')
     consul.check_process()
     # consul.deregister_check('8')
