@@ -4,6 +4,17 @@ from src.service.Runner import Runner
 import json
 
 
+def checkIntegrity(commands):
+    if not all(k in commands for k in ('project_id', 'commands')):
+        return False
+    for command in commands['commands']:
+        if not all(k in command for k in ('command', 'stdout')):
+            return False
+    if not os.path.exists(f'/projects/{commands["project_id"]}/Dockerfile'):
+        return False
+    return True
+
+
 class Message:
     connection_in = Connection(os.getenv('BROKER_HOST'), os.getenv('BROKER_QUEUE_IN'), int(os.getenv('BROKER_PORT')))
     connection_out = Connection(os.getenv('BROKER_HOST'), os.getenv('BROKER_QUEUE_OUT'), int(os.getenv('BROKER_PORT')))
@@ -39,6 +50,9 @@ class Message:
     def callbackMessage(self, ch, method, properties, body):
         print(' [x] Received ', body)
         commands = json.loads(body)
+        if not checkIntegrity(commands):
+            print(' error: Invalid message')
+            return
         process = commands['process_id']
         # project = commands['project_path']
         runner = Runner(process)
@@ -58,3 +72,4 @@ class Message:
             self.send(msg_out)
             i += 1
         runner.stop()
+
