@@ -1,3 +1,4 @@
+import os
 import threading
 import docker
 import datetime
@@ -36,4 +37,4 @@ class ApiService(threading.Thread):
         threading.Thread.__init__(self)
 
     def run(self):
-        app.run(host="0.0.0.0", port=8156)
+        app.run(host="0.0.0.0", port=os.getenv('API_PORT'))

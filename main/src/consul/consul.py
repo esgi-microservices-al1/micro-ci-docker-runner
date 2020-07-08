@@ -1,3 +1,4 @@
+import os
 import sched
 import time
 from threading import Thread
@@ -38,6 +39,14 @@ class ConsulService:
 
     def deregister_service(self, check_id: str) -> None:
         self.consul.agent.service.deregister(check_id)
+
+    def add_http_check(self, name: str, url, service_id: int, timeout: int = TIMEOUT, note: str = "") -> None:
+        self.consul.agent.register(name,
+                                   Check.http(url=url,
+                                              timeout=timeout,
+                                              interval='40s'),
+                                   service_id=service_id,
+                                   notes=note)
 
     def _check(self) -> None:
         if self.consul.agent.check.ttl_pass(f'service:{self.service_id}'):

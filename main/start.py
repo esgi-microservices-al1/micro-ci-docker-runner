@@ -20,6 +20,10 @@ if __name__ == "__main__":
                            service_name=os.getenv('CONSUL_SERVICE_NAME'))
 
     consul.register()
+    consul.add_http_check(name='API',
+                          url=f'http://localhost:{os.getenv("API_PORT")}/check',
+                          service_id='1234567',
+                          note='Is API alive ?')
     consul.check_process()
     # consul.deregister_check('8')
     # consul.deregister_service('123456')
