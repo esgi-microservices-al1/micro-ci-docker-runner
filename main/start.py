@@ -10,7 +10,7 @@ if __name__ == "__main__":
                            token=os.getenv('CONSUL_TOKEN'),
                            tags=['traefik.enable=true',
                                  'traefik.frontend.entryPoints=http',
-                                 'traefik.frontend.rule=PathPrefixStrip:/{al1.runner-ci}/'],
+                                 'traefik.frontend.rule=PathPrefixStrip:/al1.runner-ci/'],
                            service_name=os.getenv('CONSUL_SERVICE_NAME'))
 
     consul.register()
