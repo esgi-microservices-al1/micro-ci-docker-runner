@@ -22,7 +22,7 @@ if __name__ == "__main__":
     consul.register()
     consul.add_http_check(name='API',
                           url=f'http://localhost:{os.getenv("API_PORT")}/check',
-                          service_id='1234567',
+                          service_id='123456',
                           note='Is API alive ?')
     consul.check_process()
     # consul.deregister_check('8')

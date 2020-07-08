@@ -41,12 +41,12 @@ class ConsulService:
         self.consul.agent.service.deregister(check_id)
 
     def add_http_check(self, name: str, url, service_id: int, timeout: int = TIMEOUT, note: str = "") -> None:
-        self.consul.agent.register(name,
-                                   Check.http(url=url,
-                                              timeout=timeout,
-                                              interval='40s'),
-                                   service_id=service_id,
-                                   notes=note)
+        self.consul.agent.check.register(f'service:{name}',
+                                         Check.http(url=url,
+                                                    timeout=timeout,
+                                                    interval='40s'),
+                                         service_id=service_id,
+                                         notes=note)
 
     def _check(self) -> None:
         if self.consul.agent.check.ttl_pass(f'service:{self.service_id}'):
@@ -60,4 +60,3 @@ class ConsulService:
         s.enter(TIMEOUT, 1, self._init, (s,))
         t = Thread(target=s.run)
         t.start()
-
