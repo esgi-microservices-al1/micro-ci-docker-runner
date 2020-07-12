@@ -78,7 +78,7 @@ class Message:
                 },
                 'status': i
             }
-            self.send(msg_out)
+            self.send(json.dumps(msg_out))
             i += 1
         runner.stop()
 
