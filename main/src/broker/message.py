@@ -68,16 +68,25 @@ class Message:
         i = 0
         for item in commands['commands']:
             rowOut = runner.run(item['command'])
-            msg_out = '''{
-                "process_id": ''' + str(process) + ''',
-                "command": "''' + str(item['command']) + '''",
-                "output": {
-                    "stdout": "''' + str(rowOut.output[0], 'utf-8') if rowOut.exit_code == 0 and rowOut.output[0] is not None else "" + '''",
-                    "stderr": "''' + str(rowOut.output[0], 'utf-8') if rowOut.exit_code != 0 and rowOut.output[0] is not None else "" + '''",
-                    "status": "''' + "success" if rowOut.exit_code == 0 else "error" + '''"
-                },
-                "status": ''' + str(i) + '''
-            }'''
+            stdout = ""
+            if rowOut.exit_code == 0 and rowOut.output[0] is not None:
+                stdout = str(rowOut.output[0], 'utf-8')
+            stderr = ""
+            if rowOut.exit_code != 0 and rowOut.output[0] is not None:
+                stderr = str(rowOut.output[0], 'utf-8')
+            status = "success"
+            if rowOut.exit_code != 0:
+                status = "error"
+            msg_out = '{'
+            msg_out += '"process_id": ' + str(process) + ','
+            msg_out += '"command": "' + str(item['command']) + '",'
+            msg_out += '"output": {'
+            msg_out += '"stdout": "' + stdout + '",'
+            msg_out += '"stderr": "' + stderr + '",'
+            msg_out += '"status": "' + status + '"'
+            msg_out += '},'
+            msg_out += '"status": ' + str(i)
+            msg_out += '}'
 
             self.send(msg_out)
             i += 1
