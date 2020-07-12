@@ -4,7 +4,7 @@ services:
   python:
     image: esgimicroci/al1-docker-runner:latest
     volumes:
-      - runner-data:/projects
+      - /micro-ci-docker-runner/projects-repository:/projects
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - .env
