@@ -77,8 +77,8 @@ class Message:
                 'process_id': ''' + process + ''',
                 'command': ''' + item['command'] + ''',
                 'output': {
-                    'stdout': ''' + rowOut.output[0] if rowOut.exit_code == 0 else '' + ''',
-                    'stderr': ''' + rowOut.output[0] if rowOut.exit_code != 0 else '' + ''',
+                    'stdout': ''' + rowOut.output[0] if rowOut.exit_code == 0 and rowOut.output[0] is not None else '' + ''',
+                    'stderr': ''' + rowOut.output[0] if rowOut.exit_code != 0 and rowOut.output[0] is not None else '' + ''',
                     'status': ''' + 'success' if rowOut.exit_code == 0 else 'error' + '''
                 },
                 'status': ''' + str(i) + '''
