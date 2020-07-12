@@ -68,6 +68,11 @@ class Message:
         i = 0
         for item in commands['commands']:
             rowOut = runner.run(item['command'])
+            print("------------------------------------------------------ rowOut")
+            print(rowOut)
+            print("------------------------------------------------------ rowOut.output[0]\nType: ")
+            print(type(rowOut.output[0]))
+            print(rowOut.output[0])
             msg_out = '''{
                 'process_id': ''' + process + ''',
                 'command': ''' + item['command'] + ''',
