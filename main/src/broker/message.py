@@ -21,6 +21,12 @@ class Message:
 
     def send(self, message):
         self.connection_out.channel.basic_publish(exchange='',
+                                                  routing_key=self.connection_out.queue,
+                                                  body=message)
+        print(' [x] Sent', message)
+
+    def sendToUs(self, message):
+        self.connection_in.channel.basic_publish(exchange='',
                                                   routing_key=self.connection_in.queue,
                                                   body=message)
         print(' [x] Sent', message)
