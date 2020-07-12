@@ -68,26 +68,26 @@ class Message:
         i = 0
         for item in commands['commands']:
             rowOut = runner.run(item['command'])
-            # msg_out = {
-            #     'process_id': process,
-            #     'command': item['command'],
-            #     'output': {
-            #         'stdout': rowOut.output[0] if rowOut.exit_code == 0 else '',
-            #         'stderr': rowOut.output[0] if rowOut.exit_code != 0 else '',
-            #         'status': 'success' if rowOut.exit_code == 0 else 'error'
-            #     },
-            #     'status': i
-            # }
             msg_out = '''{
-                "process_id": 1,
-                "command": "ls",
-                "output": {
-                    "stdout": "",
-                    "stderr": "",
-                    "status": "success"
+                'process_id': ''' + process + ''',
+                'command': ''' + item['command'] + ''',
+                'output': {
+                    'stdout': ''' + rowOut.output[0] if rowOut.exit_code == 0 else '' + ''',
+                    'stderr': ''' + rowOut.output[0] if rowOut.exit_code != 0 else '' + ''',
+                    'status': ''' + 'success' if rowOut.exit_code == 0 else 'error' + '''
                 },
-                "status": 6
+                'status': ''' + str(i) + '''
             }'''
+            # msg_out = '''{
+            #     "process_id": 1,
+            #     "command": "ls",
+            #     "output": {
+            #         "stdout": "",
+            #         "stderr": "",
+            #         "status": "success"
+            #     },
+            #     "status": 6
+            # }'''
 
             self.send(msg_out)
             i += 1
