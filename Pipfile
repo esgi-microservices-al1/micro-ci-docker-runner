@@ -8,6 +8,7 @@ docker= "*"
 pika= "*"
 python-consul2= "*"
 flask= "*"
+flask_cors= "*"
 
 [dev-packages]
 vulture = "==1.4"
