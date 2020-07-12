@@ -6,11 +6,14 @@ import json
 
 def checkIntegrity(commands):
     if not all(k in commands for k in ('project_id', 'commands')):
+        print("Missing project_id or commands parameter")
         return False
     for command in commands['commands']:
         if not all(k in command for k in ('command', 'stdout')):
+            print("Invalid command")
             return False
     if not os.path.exists(f'/projects/{commands["project_id"]}/Dockerfile'):
+        print("Dockerfile doesnt exist at the destination")
         return False
     return True
 
