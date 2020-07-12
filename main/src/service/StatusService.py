@@ -10,7 +10,7 @@ class StatusService:
 
     def read(self):
         StatusService.image_container_ids = []
-        with open('resources/data.csv', mode='r') as csv_file:
+        with open('../resources/data.csv', mode='r') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=';')
             line_count = 0
             for row in csv_reader:
@@ -21,7 +21,7 @@ class StatusService:
             csv_file.close()
 
     def write(self):
-        with open('resources/data.csv', mode='w', newline='') as csv_file:
+        with open('../resources/data.csv', mode='w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
             for image_container_id in StatusService.image_container_ids:
