@@ -72,8 +72,8 @@ class Message:
                 'process_id': process,
                 'command': item['command'],
                 'output': {
-                    'stdout': rowOut.output[0] if rowOut.exit_code == 0 else '',
-                    'stderr': rowOut.output[0] if rowOut.exit_code != 0 else '',
+                    'stdout': rowOut.output[0].decode("utf-8") if rowOut.exit_code == 0 else '',
+                    'stderr': rowOut.output[0].decode("utf-8") if rowOut.exit_code != 0 else '',
                     'status': 'success' if rowOut.exit_code == 0 else 'error'
                 },
                 'status': i
