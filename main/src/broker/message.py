@@ -78,16 +78,16 @@ class Message:
             #     },
             #     'status': i
             # }
-            msg_out = {
-                'process_id': 1,
-                'command': "ls",
-                'output': {
-                    'stdout': '',
-                    'stderr': '',
-                    'status': 'success'
+            msg_out = '''{
+                "process_id": 1,
+                "command": "ls",
+                "output": {
+                    "stdout": "",
+                    "stderr": "",
+                    "status": "success"
                 },
-                'status': 6
-            }
+                "status": 6
+            }'''
 
             self.send(msg_out)
             i += 1
