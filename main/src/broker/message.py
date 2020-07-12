@@ -70,11 +70,11 @@ class Message:
             rowOut = runner.run(item['command'])
             msg_out = '''{
                 "process_id": ''' + str(process) + ''',
-                "command": ''' + str(item['command']) + ''',
+                "command": "''' + str(item['command']) + '''",
                 "output": {
-                    "stdout": ''' + str(rowOut.output[0], 'utf-8') if rowOut.exit_code == 0 and rowOut.output[0] is not None else "" + ''',
-                    "stderr": ''' + str(rowOut.output[0], 'utf-8') if rowOut.exit_code != 0 and rowOut.output[0] is not None else "" + ''',
-                    "status": ''' + "success" if rowOut.exit_code == 0 else "error" + '''
+                    "stdout": "''' + str(rowOut.output[0], 'utf-8') if rowOut.exit_code == 0 and rowOut.output[0] is not None else "" + '''",
+                    "stderr": "''' + str(rowOut.output[0], 'utf-8') if rowOut.exit_code != 0 and rowOut.output[0] is not None else "" + '''",
+                    "status": "''' + "success" if rowOut.exit_code == 0 else "error" + '''"
                 },
                 "status": ''' + str(i) + '''
             }'''
