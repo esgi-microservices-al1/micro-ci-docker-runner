@@ -1,4 +1,6 @@
 import os
+from threading import Thread
+
 from src.broker.connection import Connection
 from src.service.Runner import Runner
 import json
@@ -62,6 +64,10 @@ class Message:
         if not checkIntegrity(commands):
             print(' error: Invalid message')
             return
+        thread = threading.Thread(target=runnerMessage, kwargs={'commands': commands})
+        thread.start()
+
+    def runnerMessage(self, commands):
         process = commands['project_id']
         # project = commands['project_path']
         runner = Runner(process)
@@ -91,4 +97,3 @@ class Message:
             self.send(msg_out)
             i += 1
         runner.stop()
-
