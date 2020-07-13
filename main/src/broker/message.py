@@ -99,4 +99,3 @@ class Message:
         statusService = StatusService()
         thread = threading.Thread(target=self.runnerMessage, kwargs={'commands': commands, 'status': statusService})
         thread.start()
-        thread.join()
