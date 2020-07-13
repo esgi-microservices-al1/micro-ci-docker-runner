@@ -25,7 +25,7 @@ def getStats():
         # created_base = image2.get('Created')[:-4] + 'Z'
         # created = datetime.datetime.strptime(created_base, "%Y-%m-%dT%H:%M:%S.%fZ") + datetime.timedelta(hours=2)
         print("image_container_id : " + str(image_container_id))
-        created = datetime.datetime.strptime(str(image_container_id[3]), '%Y-%m-%d %d:%M:%S.%f')
+        created = datetime.datetime.strptime(str(image_container_id[3]), '%Y-%m-%d %H:%M:%S.%f')
         difference = datetime.datetime.now() - created
         response = {'image_id': image_container_id[0], 'container_id': image_container_id[1],
                     'project_id': image_container_id[2], 'uptime': str(difference)}
