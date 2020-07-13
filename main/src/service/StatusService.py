@@ -1,4 +1,5 @@
 import csv
+from time import sleep
 
 
 class StatusService:
@@ -6,8 +7,13 @@ class StatusService:
     inUse = False
 
     def __init__(self):
-        # open('resources/data.csv', 'w+')
         print("init status service")
+        StatusService.inUse = True
+        with open('/opt/project/main/resources/data.csv', mode='w', newline='') as csv_file:
+            csv_writer = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            csv_writer.writerow("")
+            csv_file.close()
+        StatusService.inUse = False
 
     def read(self):
         StatusService.inUse = True
