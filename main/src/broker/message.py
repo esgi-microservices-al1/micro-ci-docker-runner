@@ -3,6 +3,7 @@ import threading
 
 from src.broker.connection import Connection
 from src.service.Runner import Runner
+from src.service.StatusService import *
 import json
 
 
@@ -58,10 +59,10 @@ class Message:
         print(' [*] Waiting for messages. To exit press CTRL+C')
         self.connection_in.channel.start_consuming()
 
-    def runnerMessage(self, commands):
+    def runnerMessage(self, commands, status):
         process = commands['project_id']
         # project = commands['project_path']
-        runner = Runner(process)
+        runner = Runner(process, status)
         i = 0
         for item in commands['commands']:
             rowOut = runner.run(item['command'])
@@ -95,5 +96,6 @@ class Message:
         if not checkIntegrity(commands):
             print(' error: Invalid message')
             return
-        thread = threading.Thread(target=self.runnerMessage, kwargs={'commands': commands})
+        statusService = StatusService()
+        thread = threading.Thread(target=self.runnerMessage, kwargs={'commands': commands, 'status': statusService})
         thread.start()
