@@ -1,11 +1,16 @@
 import csv
+import os
 from time import sleep
-from threading import Lock
+
+
+#while StatusService.inUse:
+#   sleep(0.10)
 
 
 class StatusService:
     image_container_ids = []
     inUse = False
+    path = "/lockdir"
 
     def __init__(self):
         print("init status service")
@@ -14,7 +19,11 @@ class StatusService:
         StatusService.inUse = False
 
     def read(self):
+
+        while os.path.exists(self.path):
+            sleep(0.10)
         StatusService.inUse = True
+        os.mkdir(self.path)
         image_container_ids_array = []
         with open('/opt/project/main/resources/data.csv', mode='r') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=';')
@@ -27,10 +36,14 @@ class StatusService:
             print(f'Processed {line_count} lines.')
             csv_file.close()
         StatusService.inUse = False
+        os.rmdir(self.path)
         return image_container_ids_array
 
     def write(self):
+        while os.path.exists(self.path):
+            sleep(0.10)
         StatusService.inUse = True
+        os.mkdir(self.path)
         with open('/opt/project/main/resources/data.csv', mode='w', newline='') as csv_file:
             csv_writer = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
@@ -38,12 +51,12 @@ class StatusService:
                 csv_writer.writerow([image_container_id[0], image_container_id[1], image_container_id[2], image_container_id[3]])
             csv_file.close()
         StatusService.inUse = False
+        os.rmdir(self.path)
 
     def add_image_ids(self, image_id, container_id, project_id, date_created):
         StatusService.image_container_ids = self.read()
         StatusService.image_container_ids.append((image_id, container_id, project_id, str(date_created)))
-        while StatusService.inUse:
-            sleep(0.10)
+
         self.write()
 
     def delete_by_image_id(self, container_id):
@@ -51,8 +64,7 @@ class StatusService:
         for image_container_id in StatusService.image_container_ids:
             if image_container_id[0] == container_id:
                 StatusService.image_container_ids.remove(image_container_id)
-        while StatusService.inUse:
-            sleep(0.10)
+
         self.write()
 
     def checkIfOtherImage(self, image_id):
