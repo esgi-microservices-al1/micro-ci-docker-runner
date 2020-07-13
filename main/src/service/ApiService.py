@@ -24,6 +24,7 @@ def getStats():
         difference = datetime.datetime.now() - created
         print('datetime.datetime.now() : '+str(datetime.datetime.now()))
         print('created : '+str(created))
+        print('str(difference) : '+str(difference))
         response = {'image_id': image_container_id[0], 'container_id': image_container_id[1],
                     'project_id': image_container_id[2], 'uptime': str(difference)}
         responses['datas'].append(response)
