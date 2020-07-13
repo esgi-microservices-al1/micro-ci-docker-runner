@@ -25,8 +25,7 @@ class Runner:
         self.container.remove()
         image_id = self.image.id
         if self.statusService.checkIfOtherImage(image_id) == 1:
-            try:
-                self.client.images.remove(self.image.id)
-            except SystemError:
-                print("Image is being used by an other container")
+            print("before remove image")
+            res = self.client.images.remove(self.image.id)
+            print(res)
         self.statusService.delete_by_image_id(image_id)
