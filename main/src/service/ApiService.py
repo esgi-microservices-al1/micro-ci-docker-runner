@@ -15,15 +15,11 @@ CORS(app)
 @app.route('/stats')
 def getStats():
     responses = {'datas': []}
-    client = docker.APIClient()
     statusService = StatusService()
     while StatusService.inUse:
         sleep(0.10)
     statusService.read()
     for image_container_id in StatusService.image_container_ids:
-        # image2 = client.inspect_image(image_container_id[0])
-        # created_base = image2.get('Created')[:-4] + 'Z'
-        # created = datetime.datetime.strptime(created_base, "%Y-%m-%dT%H:%M:%S.%fZ") + datetime.timedelta(hours=2)
         print("image_container_id : " + str(image_container_id))
         created = datetime.datetime.strptime(image_container_id[3], '%Y-%m-%d %H:%M:%S.%f')
         difference = datetime.datetime.now() - created
