@@ -31,4 +31,6 @@ class Runner:
                 self.client.images.remove(self.image.id)
             except (requests.exceptions.HTTPError, docker.errors.APIError):
                 print("Image used by other container")
+            print("done delete image")
         self.statusService.delete_by_image_id(image_id)
+        print("removed container and image")
