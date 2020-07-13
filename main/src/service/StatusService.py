@@ -1,10 +1,4 @@
 import csv
-import os
-from time import sleep
-
-
-# while StatusService.inUse:
-#   sleep(0.10)
 
 
 class StatusService:
@@ -17,7 +11,6 @@ class StatusService:
         open('/opt/project/main/resources/data.csv', 'w').close()
 
     def read(self):
-
         image_container_ids_array = []
         with open('/opt/project/main/resources/data.csv', mode='r') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=';')
@@ -29,7 +22,6 @@ class StatusService:
                     line_count += 1
             print(f'Processed {line_count} lines.')
             csv_file.close()
-        StatusService.inUse = False
         return image_container_ids_array
 
     def write(self):
@@ -42,41 +34,21 @@ class StatusService:
             csv_file.close()
 
     def add_image_ids(self, image_id, container_id, project_id, date_created):
-
-        while os.path.exists(self.path):
-            sleep(0.10)
-        os.mkdir(self.path)
-
         StatusService.image_container_ids = self.read()
         StatusService.image_container_ids.append((image_id, container_id, project_id, str(date_created)))
-
         self.write()
 
-        os.rmdir(self.path)
 
     def delete_by_image_id(self, container_id):
-
-        while os.path.exists(self.path):
-            sleep(0.10)
-        os.mkdir(self.path)
-
         StatusService.image_container_ids = self.read()
         for image_container_id in StatusService.image_container_ids:
             if image_container_id[0] == container_id:
                 StatusService.image_container_ids.remove(image_container_id)
         self.write()
 
-        os.rmdir(self.path)
-
     def checkIfOtherImage(self, image_id):
-
-        while os.path.exists(self.path):
-            sleep(0.10)
-        os.mkdir(self.path)
-
         count = 0
         for image_container_id in StatusService.image_container_ids:
             if image_id == image_container_id[0]:
                 count += 1
-        os.rmdir(self.path)
         return count
