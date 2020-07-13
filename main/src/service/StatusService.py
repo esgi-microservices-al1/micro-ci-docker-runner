@@ -9,10 +9,7 @@ class StatusService:
     def __init__(self):
         print("init status service")
         StatusService.inUse = True
-        with open('/opt/project/main/resources/data.csv', mode='w', newline='') as csv_file:
-            csv_writer = csv.writer(csv_file, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            csv_writer.writerow("")
-            csv_file.close()
+        open('/opt/project/main/resources/data.csv', 'w').close()
         StatusService.inUse = False
 
     def read(self):
@@ -22,6 +19,7 @@ class StatusService:
             csv_reader = csv.reader(csv_file, delimiter=';')
             line_count = 0
             for row in csv_reader:
+                print('row : '+row)
                 if row[0] and row[1]:
                     print(f'\t{row[0]},{row[1]}.')
                     StatusService.image_container_ids.append((row[0], row[1], row[2]))
