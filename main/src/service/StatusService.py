@@ -14,19 +14,19 @@ class StatusService:
 
     def read(self):
         StatusService.inUse = True
-        StatusService.image_container_ids = []
+        image_container_ids_array = []
         with open('/opt/project/main/resources/data.csv', mode='r') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=';')
             line_count = 0
             for row in csv_reader:
-                print('row : '+row)
                 if row[0] and row[1]:
                     print(f'\t{row[0]},{row[1]}.')
-                    StatusService.image_container_ids.append((row[0], row[1], row[2]))
+                    image_container_ids_array.append((row[0], row[1], row[2]))
                     line_count += 1
             print(f'Processed {line_count} lines.')
             csv_file.close()
         StatusService.inUse = False
+        return image_container_ids_array
 
     def write(self):
         StatusService.inUse = True
@@ -39,12 +39,14 @@ class StatusService:
         StatusService.inUse = False
 
     def add_image_ids(self, image_id, container_id, project_id):
+        StatusService.image_container_ids = self.read()
         StatusService.image_container_ids.append((image_id, container_id, project_id))
         while StatusService.inUse:
             sleep(0.10)
         self.write()
 
     def delete_by_image_id(self, container_id):
+        StatusService.image_container_ids = self.read()
         for image_container_id in StatusService.image_container_ids:
             if image_container_id[0] == container_id:
                 StatusService.image_container_ids.remove(image_container_id)
