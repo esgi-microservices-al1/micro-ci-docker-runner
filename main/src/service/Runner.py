@@ -2,6 +2,8 @@ import docker
 from docker.types import Mount
 from src.service.StatusService import *
 import requests
+import datetime
+
 
 class Runner:
     def __init__(self, path, statusService):
@@ -10,7 +12,7 @@ class Runner:
         self.image, logs = self.client.images.build(path=f'/projects/{path}', dockerfile='Dockerfile')
         mounts = [Mount(target="/var/run/docker.sock", source="/var/run/docker.sock", type='bind')]
         self.container = self.client.containers.run(image=self.image.id, tty=True, detach=True, mounts=mounts)
-        self.statusService.add_image_ids(self.image.id, self.container.id, path)
+        self.statusService.add_image_ids(self.image.id, self.container.id, path, datetime.datetime.now())
 
         for logLine in logs:
             print(logLine)
