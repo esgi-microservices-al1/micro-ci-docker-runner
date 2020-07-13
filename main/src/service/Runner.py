@@ -3,12 +3,11 @@ from docker.types import Mount
 from src.service.StatusService import *
 import requests
 import datetime
-import uuid
 
 
 class Runner:
-    def __init__(self, path):
-        self.statusService = StatusService(str(uuid.uuid4().hex)+'.csv')
+    def __init__(self, path, statusService):
+        self.statusService = statusService
         self.client = docker.from_env()
         self.image, logs = self.client.images.build(path=f'/projects/{path}', dockerfile='Dockerfile')
         mounts = [Mount(target="/var/run/docker.sock", source="/var/run/docker.sock", type='bind')]

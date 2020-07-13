@@ -11,13 +11,14 @@ from time import sleep
 app = Flask(__name__)
 CORS(app)
 
-path = "/lockdir"
 
 @app.route('/stats')
 def getStats():
     responses = {'datas': []}
-    statusService = StatusService("data.csv")
-    statusService.readAllFiles()
+    statusService = StatusService()
+    while StatusService.inUse:
+        sleep(0.10)
+    statusService.read()
     for image_container_id in StatusService.image_container_ids:
         created = datetime.datetime.strptime(image_container_id[3], '%Y-%m-%d %H:%M:%S.%f')
         difference = datetime.datetime.now() - created
