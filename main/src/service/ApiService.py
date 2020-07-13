@@ -21,9 +21,10 @@ def getStats():
         sleep(0.10)
     statusService.read()
     for image_container_id in StatusService.image_container_ids:
-        image2 = client.inspect_image(image_container_id[0])
+        # image2 = client.inspect_image(image_container_id[0])
         # created_base = image2.get('Created')[:-4] + 'Z'
         # created = datetime.datetime.strptime(created_base, "%Y-%m-%dT%H:%M:%S.%fZ") + datetime.timedelta(hours=2)
+        print("image_container_id : " + image_container_id)
         created = datetime.datetime.strptime(image_container_id[3], '%Y-%m-%d %d:%M:%S.%f')
         difference = datetime.datetime.now() - created
         response = {'image_id': image_container_id[0], 'container_id': image_container_id[1],
