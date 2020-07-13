@@ -17,7 +17,7 @@ path = "/lockdir"
 def getStats():
     responses = {'datas': []}
     statusService = StatusService()
-    statusService.read()
+    statusService.readAllFiles()
     for image_container_id in StatusService.image_container_ids:
         created = datetime.datetime.strptime(image_container_id[3], '%Y-%m-%d %H:%M:%S.%f')
         difference = datetime.datetime.now() - created
