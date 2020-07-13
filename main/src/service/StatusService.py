@@ -14,9 +14,10 @@ class StatusService:
             csv_reader = csv.reader(csv_file, delimiter=';')
             line_count = 0
             for row in csv_reader:
-                print(f'\t{row[0]},{row[1]}.')
-                StatusService.image_container_ids.append((row[0], row[1], row[2]))
-                line_count += 1
+                if row[0] and row[1]:
+                    print(f'\t{row[0]},{row[1]}.')
+                    StatusService.image_container_ids.append((row[0], row[1], row[2]))
+                    line_count += 1
             print(f'Processed {line_count} lines.')
             csv_file.close()
 
@@ -37,3 +38,10 @@ class StatusService:
             if image_container_id[0] == container_id:
                 StatusService.image_container_ids.remove(image_container_id)
         self.write()
+
+    def checkIfOtherImage(self, image_id):
+        count = 0
+        for image_container_id in StatusService.image_container_ids:
+            if image_id == image_container_id[0]:
+                count += 1
+        return count

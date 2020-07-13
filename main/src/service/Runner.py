@@ -24,5 +24,6 @@ class Runner:
         self.container.stop()
         self.container.remove()
         image_id = self.image.id
-        self.client.images.remove(self.image.id)
+        if self.statusService.checkIfOtherImage(image_id) == 1:
+            self.client.images.remove(self.image.id)
         self.statusService.delete_by_image_id(image_id)
