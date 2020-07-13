@@ -1,5 +1,5 @@
 import os
-from threading import Thread
+import threading
 
 from src.broker.connection import Connection
 from src.service.Runner import Runner
@@ -58,15 +58,6 @@ class Message:
         print(' [*] Waiting for messages. To exit press CTRL+C')
         self.connection_in.channel.start_consuming()
 
-    def callbackMessage(self, ch, method, properties, body):
-        print(' [x] Received ', body)
-        commands = json.loads(body)
-        if not checkIntegrity(commands):
-            print(' error: Invalid message')
-            return
-        thread = threading.Thread(target=runnerMessage, kwargs={'commands': commands})
-        thread.start()
-
     def runnerMessage(self, commands):
         process = commands['project_id']
         # project = commands['project_path']
@@ -97,3 +88,12 @@ class Message:
             self.send(msg_out)
             i += 1
         runner.stop()
+
+    def callbackMessage(self, ch, method, properties, body):
+        print(' [x] Received ', body)
+        commands = json.loads(body)
+        if not checkIntegrity(commands):
+            print(' error: Invalid message')
+            return
+        thread = threading.Thread(target=self.runnerMessage, kwargs={'commands': commands})
+        thread.start()
