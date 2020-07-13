@@ -1,6 +1,7 @@
 import docker
 from docker.types import Mount
 from src.service.StatusService import *
+import requests
 
 class Runner:
     def __init__(self, path):
@@ -26,6 +27,8 @@ class Runner:
         image_id = self.image.id
         if self.statusService.checkIfOtherImage(image_id) == 1:
             print("before remove image")
-            res = self.client.images.remove(self.image.id)
-            print(res)
+            try:
+                self.client.images.remove(self.image.id)
+            except (requests.exceptions.HTTPError, docker.errors.APIError):
+                print("Image used by other container")
         self.statusService.delete_by_image_id(image_id)
