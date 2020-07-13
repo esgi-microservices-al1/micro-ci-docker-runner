@@ -54,11 +54,7 @@ class StatusService:
 
     def checkIfOtherImage(self, image_id):
         count = 0
-        print("count before : ", count)
-        print("StatusService.image_container_ids : ", StatusService.image_container_ids)
-        print("image_id : ", image_id)
         for image_container_id in StatusService.image_container_ids:
             if image_id == image_container_id[0]:
                 count += 1
-        print("count after ", count)
         return count
